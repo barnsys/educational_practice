@@ -1,0 +1,85 @@
+
+setwd("C:\\Users\\user\\Documents\\математическое моделирование\\ оррел€ционный и регрессионный анализ\\")
+
+
+
+
+#///////коррел€ционный анализ
+
+data<-read.table("table.txt",header=TRUE,sep="\t")
+
+shapiro.test(data$ƒлина.первого.листа)
+
+shapiro.test(data$Ўирина.первого.листа)
+
+cor.test(data$ƒлина.первого.листа, data$Ўирина.первого.листа, method="pearson")
+
+cor.test(data$ƒлина.первого.листа, data$Ўирина.первого.листа, method="spearman")
+
+cor.test(data$ƒлина.первого.листа, data$Ўирина.первого.листа, method="kendall")
+
+
+
+
+#////////////////визуализаци€ результатов корел€ционного анализа
+
+data<-data[order(data$ƒлина.первого.листа),]
+
+plot(data$ƒлина.первого.лис, data$Ўирина.первого.листа)
+
+lines(data$ƒлина.первого.лис, data$Ўирина.первого.листа, col = "blue")
+
+abline(lm(data$Ўирина.первого.листа ~ data$ƒлина.первого.листа), col="red")
+
+
+
+
+#///////регресионный анализ
+
+#///////линена€ регресии€
+
+df<-read.table("table.txt",header=TRUE,sep="\t")
+
+model <- lm(Ўирина.первого.листа ~ ƒлина.первого.листа, data=df)
+
+summary(model)
+
+new.df<-data.frame(ƒлина.первого.листа=c(3,5,7,8,12))
+
+predict(model, new.df, interval = "confidence", level = 0.95)
+
+
+
+#///////линена€ регресии€ проста€ визуализаци€
+
+df<-df[order(df$ƒлина.первого.листа),]
+
+plot(df$ƒлина.первого.листа, df$Ўирина.первого.листа)
+
+lines(df$ƒлина.первого.листа, df$Ўирина.первого.листа, col = "blue")
+abline(model, col="red")
+
+
+
+
+#///////линена€ регресии€ визуализаци€ с доверительным интервалом
+
+newx<-seq(min(df$ƒлина.первого.лист), max(df$ƒлина.первого.лист), length.out=100)
+
+new.df<-data.frame(ƒлина.первого.листа=newx)
+
+preds<-predict(model, new.df, interval = "confidence", level = 0.95)
+
+plot(Ўирина.первого.листа ~ ƒлина.первого.листа, data = df, type = 'n')
+
+polygon(c(rev(newx), newx), c(rev(preds[ ,3]), preds[ ,2]), col = 'grey80', border = NA)
+
+lines(newx, preds[ ,1], lty = 'dashed', col = 'red')
+
+lines(newx, preds[ ,3], lty = 'dashed', col = 'red')
+lines(newx, preds[ ,2], lty = 'dashed', col = 'red')
+
+points(Ўирина.первого.листа ~ ƒлина.первого.листа, data = df)
+
+
+
