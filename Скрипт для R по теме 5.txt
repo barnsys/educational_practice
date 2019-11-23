@@ -1,0 +1,146 @@
+setwd("F:\\Практика для студентов ИГУ\\Корреляционный и регрессионный анализ\\")
+
+
+#загрузка массива данных
+
+df<-read.table("table.txt",header=TRUE,sep="\t")
+
+#///////линеная регресиия
+
+df<-df[order(df$Длина.первого.листа),]
+
+model_1 <- lm(Ширина.первого.листа ~ Длина.первого.листа, data=df)
+
+summary(model_1)
+
+plot(df$Длина.первого.листа, df$Ширина.первого.листа)
+
+lines(df$Длина.первого.листа, df$Ширина.первого.листа, col = "blue")
+abline(model_1, col="red")
+
+
+
+
+#///////полином второ степнни (квадратичная функция)
+
+model_2 <- lm(Ширина.первого.листа ~ poly(Длина.первого.листа, 2), data=df)
+
+summary(model_2)
+
+plot(df$Длина.первого.листа, df$Ширина.первого.листа)
+lines(df$Длина.первого.листа, df$Ширина.первого.листа, col = "blue")
+
+newx<-seq(min(df$Длина.первого.лист), max(df$Длина.первого.лист), length.out=100)
+new.df<-data.frame(Длина.первого.листа=newx)
+
+preds<-predict(model_2, new.df, interval = "confidence", level = 0.95)
+lines(newx, preds[ ,1], col = 'red')
+
+
+
+
+#///////полином третей степени (кубическая функция)
+
+model_3 <- lm(Ширина.первого.листа ~ poly(Длина.первого.листа, 3), data=df)
+
+summary(model_3)
+
+plot(df$Длина.первого.листа, df$Ширина.первого.листа)
+lines(df$Длина.первого.листа, df$Ширина.первого.листа, col = "blue")
+
+newx<-seq(min(df$Длина.первого.лист), max(df$Длина.первого.лист), length.out=100)
+new.df<-data.frame(Длина.первого.листа=newx)
+
+preds<-predict(model_3, new.df, interval = "confidence", level = 0.95)
+lines(newx, preds[ ,1], col = 'red')
+
+
+
+
+#///////полином 15 степени
+
+model_15 <- lm(Ширина.первого.листа ~ poly(Длина.первого.листа, 15), data=df)
+
+summary(model_15)
+
+plot(df$Длина.первого.листа, df$Ширина.первого.листа)
+lines(df$Длина.первого.листа, df$Ширина.первого.листа, col = "blue")
+
+newx<-seq(min(df$Длина.первого.лист), max(df$Длина.первого.лист), length.out=100)
+new.df<-data.frame(Длина.первого.листа=newx)
+
+preds<-predict(model_15, new.df, interval = "confidence", level = 0.95)
+lines(newx, preds[ ,1], col = 'red')
+
+
+
+
+#///////експоненциальная зависимость
+
+model_exp <- lm(log(Ширина.первого.листа) ~ Длина.первого.листа, data=df)
+
+summary(model_exp)
+
+plot(df$Длина.первого.листа, df$Ширина.первого.листа)
+lines(df$Длина.первого.листа, df$Ширина.первого.листа, col = "blue")
+
+newx<-seq(min(df$Длина.первого.лист), max(df$Длина.первого.лист), length.out=100)
+new.df<-data.frame(Длина.первого.листа=newx)
+
+preds<-exp(predict(model_exp, new.df, interval = "confidence", level = 0.95))
+lines(newx, preds[ ,1], col = 'red')
+
+
+
+
+#///////логорифмическая зависмость
+
+model_log <- lm(exp(Ширина.первого.листа) ~ Длина.первого.листа, data=df)
+
+summary(model_log)
+
+plot(df$Длина.первого.листа, df$Ширина.первого.листа)
+lines(df$Длина.первого.листа, df$Ширина.первого.листа, col = "blue")
+
+newx<-seq(min(df$Длина.первого.лист), max(df$Длина.первого.лист), length.out=100)
+new.df<-data.frame(Длина.первого.листа=newx)
+
+preds<-log(predict(model_log, new.df, interval = "confidence", level = 0.95))
+lines(newx, preds[ ,1], col = 'red')
+
+
+
+
+
+#сравнение моделей
+
+AIC(model_1)
+
+rezult<-data.frame(model=c("model_1", "model_2", "model_3", "model_15", "model_exp", "model_log"), AIC_value=c(AIC(model_1), AIC(model_2), AIC(model_3), AIC(model_15), AIC(model_exp), AIC(model_log)))
+
+rezult<-rezult[order(rezult$AIC_value),]
+
+rezult
+
+
+#визуализация для лучшей модел
+
+newx<-seq(min(df$Длина.первого.лист), max(df$Длина.первого.лист), length.out=100)
+
+new.df<-data.frame(Длина.первого.листа=newx)
+
+preds<-exp(predict(model_exp, new.df, interval = "confidence", level = 0.95))
+
+plot(Ширина.первого.листа ~ Длина.первого.листа, data = df, type = 'n')
+
+polygon(c(rev(newx), newx), c(rev(preds[ ,3]), preds[ ,2]), col = 'grey80', border = NA)
+
+lines(newx, preds[ ,1], lty = 'dashed', col = 'red')
+
+lines(newx, preds[ ,3], lty = 'dashed', col = 'red')
+lines(newx, preds[ ,2], lty = 'dashed', col = 'red')
+
+points(Ширина.первого.листа ~ Длина.первого.листа, data = df)
+
+
+
