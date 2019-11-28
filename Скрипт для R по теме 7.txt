@@ -1,0 +1,75 @@
+library(vegan)
+library(pvclust)
+
+setwd("F:\\Практика для студентов ИГУ\\Занятия_1_курс\\Занятие_4_бутсреп анализ\\")
+
+data<-read.table("table_морфометрические_признаки_растений.txt",header=TRUE,sep="\t")
+
+
+#подготовка имен строк
+
+rownames(data)<-data[,1]
+data<-data[,-1]
+
+rownames(data)<-paste(rownames(data[,1], "_", rownames(data),  sep="")
+
+
+#подготовка таблицы факторов
+
+d_factor<-data[,1, drop=F]
+
+data<-data[,-1]
+
+
+#неметричесвое многомерное шкалирование евклидовы дистанции
+
+data<-decostand(data, method="range", MARGIN = 2)
+
+ord <- metaMDS(data, distance = "euclidean")
+
+#визуализация результатов многомерного шкалирования
+plot(ord, type = "n")
+
+points(ord, display="sites", pch=0, lwd=3.5, cex = 3.2, col="black", select=which(d_factor$Точка.сбора=="Г"))
+points(ord, display="sites", pch=1, lwd=3.5, cex = 3.2, col="black", select=which(d_factor$Точка.сбора=="И"))
+points(ord, display="sites", pch=2, lwd=3.5, cex = 3.2, col="red", select=which(d_factor$Точка.сбора=="Л"))
+points(ord, display="sites", pch=5, lwd=3.5, cex = 3.2, col="red", select=which(d_factor$Точка.сбора=="О"))
+points(ord, display="sites", pch=0, lwd=3.5, cex = 3.2, col="blue", select=which(d_factor$Точка.сбора=="Х"))
+points(ord, display="sites", pch=2, lwd=3.5, cex = 3.2, col="forestgreen", select=which(d_factor$Точка.сбора=="Б"))
+
+
+text(ord, display = "sites", labels=d_factor$Точка.сбора, cex=1, col="black", select=which(d_factor$Точка.сбора=="Г"))
+text(ord, display = "sites", labels=d_factor$Точка.сбора, cex=1, col="black", select=which(d_factor$Точка.сбора=="И"))
+text(ord, display = "sites", labels=d_factor$Точка.сбора, cex=1, col="red", select=which(d_factor$Точка.сбора=="Л"))
+text(ord, display = "sites", labels=d_factor$Точка.сбора, cex=1, col="red", select=which(d_factor$Точка.сбора=="О"))
+text(ord, display = "sites", labels=d_factor$Точка.сбора, cex=1, col="blue", select=which(d_factor$Точка.сбора=="Х"))
+text(ord, display = "sites", labels=d_factor$Точка.сбора, cex=1, col="forestgreen", select=which(d_factor$Точка.сбора=="Б"))
+
+#определение достоверности влияния фактора с помошью перестановочнонго теста
+
+ord.fit<-envfit(ord~Точка.сбора, data=d_factor, perm=10000)
+ord.fit
+
+
+
+#кластерный анализа с подежками топологии
+
+fit <- pvclust(t(data), method.dist="euclidean", method.hclust="average", nboot=100)
+seplot(fit)
+
+plot(fit, hang =-1)
+
+#кластерный анализа с подежками топологии, использование альтернативных дистанций - дистанция Брея-Кертиса
+
+cosine <- function(x)
+ {
+    res<-vegdist(t(x), method="bray")
+    return(res)
+ }
+
+
+fit <- pvclust(t(data), method.dist=cosine, method.hclust="average", nboot=100)
+seplot(fit)
+
+plot(fit, hang =-1)
+
