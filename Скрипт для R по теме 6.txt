@@ -1,0 +1,107 @@
+library(vegan)
+library(pvclust)
+
+setwd("F:\\Практика для студентов ИГУ\\Многомерное шкалирование\\")
+
+data<-read.table("data_тема_6.txt",header=TRUE,sep="\t")
+
+rownames(data)<-data[,1]
+data<-data[,-1]
+
+#неметричесвое многомерное шкалирование евклидовы дистанции
+ord <- metaMDS(data, distance = "euclidean")
+
+#визуализация результатов многомерного шкалирования
+plot(ord, type = "n")
+points(ord, disp="sites", pch=21, cex=2.5, lwd=2.5, col = "red")
+text(ord, display = "site", cex=0.7, col="red")
+
+#кластерный анализ евклидовы дистанции
+d<-vegdist(data,method="euclidean")
+fit<-hclust(d, method="average")
+
+#визуализация результатов кластерного анализа
+plot(fit, hang =-1)
+
+plot(fit)
+
+
+#кластерный анализа с подежками топологии
+
+fit <- pvclust(t(data), method.dist="euclidean", method.hclust="average", nboot=1000)
+seplot(fit)
+
+plot(fit, hang =-1)
+
+
+#/////////////////////////////////////////////////////////////
+#неметричесвое многомерное шкалирование дистанции Брея-Кертиса
+ord <- metaMDS(data, distance = "bray")
+
+#визуализация результатов многомерного шкалирования
+plot(ord, type = "n")
+points(ord, disp="sites", pch=21, cex=2.5, lwd=2.5, col = "red")
+text(ord, display = "site", cex=0.7, col="red")
+
+#кластерный анализ дистанции Брея-Кертиса
+d<-vegdist(data,method="bray")
+fit<-hclust(d, method="average")
+
+#визуализация результатов кластерного анализа
+plot(fit, hang =-1)
+
+plot(fit)
+
+
+#кластерный анализа с подежками топологии
+
+rast<-function(x)
+ {
+  d<-vegdist(t(x),method="bray")
+  return(d)
+ }
+
+fit <- pvclust(t(data), method.dist=rast, method.hclust="average", nboot=1000)
+seplot(fit)
+
+plot(fit, hang =-1)
+
+
+#/////////////////////////////////////////////////////////////
+#неметричесвое многомерное шкалирование дистанции Жаккара
+ord <- metaMDS(data, distance = "jaccard")
+
+#визуализация результатов многомерного шкалирования
+plot(ord, type = "n")
+points(ord, disp="sites", pch=21, cex=2.5, lwd=2.5, col = "red")
+text(ord, display = "site", cex=0.7, col="red")
+
+#кластерный анализ дистанции Жаккара
+d<-vegdist(data,method="jaccard")
+fit<-hclust(d, method="average")
+
+#визуализация результатов кластерного анализа
+plot(fit, hang =-1)
+
+plot(fit)
+
+
+#кластерный анализа с подежками топологии
+rast<-function(x)
+ {
+  d<-vegdist(t(x),method="jaccard")
+  return(d)
+ }
+
+fit <- pvclust(t(data), method.dist=rast, method.hclust="average", nboot=1000)
+seplot(fit)
+
+plot(fit, hang =-1)
+
+
+
+
+
+
+
+
