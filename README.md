@@ -25,6 +25,10 @@ Scripts for R language on topics lecture and homework topics
 
 Домашнее задание по теме 6: Заданий по теме 6 нет.
 
+Тема лекции 7: Бутсреп анализ.
+
+Домашнее задание по теме 5: 
+
 
 
 
