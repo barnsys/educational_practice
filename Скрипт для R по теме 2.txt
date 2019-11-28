@@ -1,9 +1,9 @@
-
+#установка необходимрго пакета MASS
 install.packages("MASS", dependencies=T)
 
 library(MASS)
 
-setwd("C:\\Users\\Yurij\\Desktop\\ИГУ")
+setwd("C:\\практика")
 
 data<-read.table("distribution.txt",sep="\t",header=T, stringsAsFactors=F)
 
