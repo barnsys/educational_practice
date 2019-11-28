@@ -1,12 +1,12 @@
 library(vegan)
 library(pvclust)
 
-setwd("F:\\Практика для студентов ИГУ\\Занятия_1_курс\\Занятие_4_бутсреп анализ\\")
+setwd("F:\\РџСЂР°РєС‚РёРєР° РґР»СЏ СЃС‚СѓРґРµРЅС‚РѕРІ РР“РЈ\\Р—Р°РЅСЏС‚РёСЏ_1_РєСѓСЂСЃ\\Р—Р°РЅСЏС‚РёРµ_4_Р±СѓС‚СЃСЂРµРї Р°РЅР°Р»РёР·\\")
 
-data<-read.table("table_морфометрические_признаки_растений.txt",header=TRUE,sep="\t")
+data<-read.table("table_РјРѕСЂС„РѕРјРµС‚СЂРёС‡РµСЃРєРёРµ_РїСЂРёР·РЅР°РєРё_СЂР°СЃС‚РµРЅРёР№.txt",header=TRUE,sep="\t")
 
 
-#подготовка имен строк
+#РїРѕРґРіРѕС‚РѕРІРєР° РёРјРµРЅ СЃС‚СЂРѕРє
 
 rownames(data)<-data[,1]
 data<-data[,-1]
@@ -14,52 +14,52 @@ data<-data[,-1]
 rownames(data)<-paste(rownames(data[,1], "_", rownames(data),  sep="")
 
 
-#подготовка таблицы факторов
+#РїРѕРґРіРѕС‚РѕРІРєР° С‚Р°Р±Р»РёС†С‹ С„Р°РєС‚РѕСЂРѕРІ
 
 d_factor<-data[,1, drop=F]
 
 data<-data[,-1]
 
 
-#неметричесвое многомерное шкалирование евклидовы дистанции
+#РЅРµРјРµС‚СЂРёС‡РµСЃРІРѕРµ РјРЅРѕРіРѕРјРµСЂРЅРѕРµ С€РєР°Р»РёСЂРѕРІР°РЅРёРµ РµРІРєР»РёРґРѕРІС‹ РґРёСЃС‚Р°РЅС†РёРё
 
 data<-decostand(data, method="range", MARGIN = 2)
 
 ord <- metaMDS(data, distance = "euclidean")
 
-#визуализация результатов многомерного шкалирования
+#РІРёР·СѓР°Р»РёР·Р°С†РёСЏ СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ РјРЅРѕРіРѕРјРµСЂРЅРѕРіРѕ С€РєР°Р»РёСЂРѕРІР°РЅРёСЏ
 plot(ord, type = "n")
 
-points(ord, display="sites", pch=0, lwd=3.5, cex = 3.2, col="black", select=which(d_factor$Точка.сбора=="Г"))
-points(ord, display="sites", pch=1, lwd=3.5, cex = 3.2, col="black", select=which(d_factor$Точка.сбора=="И"))
-points(ord, display="sites", pch=2, lwd=3.5, cex = 3.2, col="red", select=which(d_factor$Точка.сбора=="Л"))
-points(ord, display="sites", pch=5, lwd=3.5, cex = 3.2, col="red", select=which(d_factor$Точка.сбора=="О"))
-points(ord, display="sites", pch=0, lwd=3.5, cex = 3.2, col="blue", select=which(d_factor$Точка.сбора=="Х"))
-points(ord, display="sites", pch=2, lwd=3.5, cex = 3.2, col="forestgreen", select=which(d_factor$Точка.сбора=="Б"))
+points(ord, display="sites", pch=0, lwd=3.5, cex = 3.2, col="black", select=which(d_factor$РўРѕС‡РєР°.СЃР±РѕСЂР°=="Р“"))
+points(ord, display="sites", pch=1, lwd=3.5, cex = 3.2, col="black", select=which(d_factor$РўРѕС‡РєР°.СЃР±РѕСЂР°=="Р"))
+points(ord, display="sites", pch=2, lwd=3.5, cex = 3.2, col="red", select=which(d_factor$РўРѕС‡РєР°.СЃР±РѕСЂР°=="Р›"))
+points(ord, display="sites", pch=5, lwd=3.5, cex = 3.2, col="red", select=which(d_factor$РўРѕС‡РєР°.СЃР±РѕСЂР°=="Рћ"))
+points(ord, display="sites", pch=0, lwd=3.5, cex = 3.2, col="blue", select=which(d_factor$РўРѕС‡РєР°.СЃР±РѕСЂР°=="РҐ"))
+points(ord, display="sites", pch=2, lwd=3.5, cex = 3.2, col="forestgreen", select=which(d_factor$РўРѕС‡РєР°.СЃР±РѕСЂР°=="Р‘"))
 
 
-text(ord, display = "sites", labels=d_factor$Точка.сбора, cex=1, col="black", select=which(d_factor$Точка.сбора=="Г"))
-text(ord, display = "sites", labels=d_factor$Точка.сбора, cex=1, col="black", select=which(d_factor$Точка.сбора=="И"))
-text(ord, display = "sites", labels=d_factor$Точка.сбора, cex=1, col="red", select=which(d_factor$Точка.сбора=="Л"))
-text(ord, display = "sites", labels=d_factor$Точка.сбора, cex=1, col="red", select=which(d_factor$Точка.сбора=="О"))
-text(ord, display = "sites", labels=d_factor$Точка.сбора, cex=1, col="blue", select=which(d_factor$Точка.сбора=="Х"))
-text(ord, display = "sites", labels=d_factor$Точка.сбора, cex=1, col="forestgreen", select=which(d_factor$Точка.сбора=="Б"))
+text(ord, display = "sites", labels=d_factor$РўРѕС‡РєР°.СЃР±РѕСЂР°, cex=1, col="black", select=which(d_factor$РўРѕС‡РєР°.СЃР±РѕСЂР°=="Р“"))
+text(ord, display = "sites", labels=d_factor$РўРѕС‡РєР°.СЃР±РѕСЂР°, cex=1, col="black", select=which(d_factor$РўРѕС‡РєР°.СЃР±РѕСЂР°=="Р"))
+text(ord, display = "sites", labels=d_factor$РўРѕС‡РєР°.СЃР±РѕСЂР°, cex=1, col="red", select=which(d_factor$РўРѕС‡РєР°.СЃР±РѕСЂР°=="Р›"))
+text(ord, display = "sites", labels=d_factor$РўРѕС‡РєР°.СЃР±РѕСЂР°, cex=1, col="red", select=which(d_factor$РўРѕС‡РєР°.СЃР±РѕСЂР°=="Рћ"))
+text(ord, display = "sites", labels=d_factor$РўРѕС‡РєР°.СЃР±РѕСЂР°, cex=1, col="blue", select=which(d_factor$РўРѕС‡РєР°.СЃР±РѕСЂР°=="РҐ"))
+text(ord, display = "sites", labels=d_factor$РўРѕС‡РєР°.СЃР±РѕСЂР°, cex=1, col="forestgreen", select=which(d_factor$РўРѕС‡РєР°.СЃР±РѕСЂР°=="Р‘"))
 
-#определение достоверности влияния фактора с помошью перестановочнонго теста
+#РѕРїСЂРµРґРµР»РµРЅРёРµ РґРѕСЃС‚РѕРІРµСЂРЅРѕСЃС‚Рё РІР»РёСЏРЅРёСЏ С„Р°РєС‚РѕСЂР° СЃ РїРѕРјРѕС€СЊСЋ РїРµСЂРµСЃС‚Р°РЅРѕРІРѕС‡РЅРѕРЅРіРѕ С‚РµСЃС‚Р°
 
-ord.fit<-envfit(ord~Точка.сбора, data=d_factor, perm=10000)
+ord.fit<-envfit(ord~РўРѕС‡РєР°.СЃР±РѕСЂР°, data=d_factor, perm=10000)
 ord.fit
 
 
 
-#кластерный анализа с подежками топологии
+#РєР»Р°СЃС‚РµСЂРЅС‹Р№ Р°РЅР°Р»РёР·Р° СЃ РїРѕРґРµР¶РєР°РјРё С‚РѕРїРѕР»РѕРіРёРё
 
 fit <- pvclust(t(data), method.dist="euclidean", method.hclust="average", nboot=100)
 seplot(fit)
 
 plot(fit, hang =-1)
 
-#кластерный анализа с подежками топологии, использование альтернативных дистанций - дистанция Брея-Кертиса
+#РєР»Р°СЃС‚РµСЂРЅС‹Р№ Р°РЅР°Р»РёР·Р° СЃ РїРѕРґРµР¶РєР°РјРё С‚РѕРїРѕР»РѕРіРёРё, РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ Р°Р»СЊС‚РµСЂРЅР°С‚РёРІРЅС‹С… РґРёСЃС‚Р°РЅС†РёР№ - РґРёСЃС‚Р°РЅС†РёСЏ Р‘СЂРµСЏ-РљРµСЂС‚РёСЃР°
 
 cosine <- function(x)
  {
@@ -72,4 +72,3 @@ fit <- pvclust(t(data), method.dist=cosine, method.hclust="average", nboot=100)
 seplot(fit)
 
 plot(fit, hang =-1)
-
