@@ -3,7 +3,7 @@ library(pvclust)
 
 setwd("C:\\практика")
 
-data<-read.table("table.txt",header=TRUE,sep="\t")
+data<-read.table("data_тема_6.txt",header=TRUE,sep="\t")
 
 rownames(data)<-data[,1]
 data<-data[,-1]
