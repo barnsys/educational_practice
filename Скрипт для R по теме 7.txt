@@ -1,7 +1,7 @@
 library(vegan)
 library(pvclust)
 
-setwd("F:\\Практика для студентов ИГУ\\Занятия_1_курс\\Занятие_4_бутсреп анализ\\")
+setwd("C:\\Практика")
 
 data<-read.table("table_морфометрические_признаки_растений.txt",header=TRUE,sep="\t")
 
