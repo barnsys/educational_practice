@@ -1,9 +1,9 @@
 library(vegan)
 library(pvclust)
 
-setwd("F:\\Практика для студентов ИГУ\\Многомерное шкалирование\\")
+setwd("C:\\практика")
 
-data<-read.table("data.txt",header=TRUE,sep="\t")
+data<-read.table("table.txt",header=TRUE,sep="\t")
 
 rownames(data)<-data[,1]
 data<-data[,-1]
