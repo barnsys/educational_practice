@@ -4,7 +4,7 @@ setwd("C:\\практика")
 
 #///////корреляционный анализ
 
-data<-read.table("table.txt",header=TRUE,sep="\t")
+data<-read.table("table_морфометрические_признаки_растений.txt",header=TRUE,sep="\t")
 
 shapiro.test(data$Длина.первого.листа)
 
